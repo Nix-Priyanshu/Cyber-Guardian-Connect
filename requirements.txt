@@ -1,0 +1,15 @@
+streamlit>=1.37
+requests>=2.31
+pandas>=2.0
+fastapi>=0.110
+uvicorn>=0.29
+reportlab>=4.0
+langchain-core>=0.3
+langchain-google-genai>=2.0
+langchain-groq>=0.2
+cryptography>=42
+numpy>=1.26
+pypdf>=4.0
+# Optional: speeds up vector search for very large knowledge bases. The app works without it
+# (falls back to a numpy-based search of the same quality, just slower at large scale).
+# faiss-cpu>=1.8

